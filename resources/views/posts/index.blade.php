@@ -16,7 +16,7 @@
                             <tbody>
                                     @foreach($posts as $post)
                                         <tr>
-                                            <td><img src="{{ asset('storage/'.$post->featured) }}" alt="{{ $post->title }}" height="100px" width="100px"
+                                            <td><img src="{{ $post->featured }}" alt="{{ $post->title }}" height="100px" width="100px"
                                                 style="border-radius: 50%"></td>
                                             <td>{{ $post->title }}</td>
                                             <td>

@@ -32,6 +32,9 @@
                     <div class="col-md-4">
                         <ul class="list-group">
                             <li class="list-group-item">
+                                <a href="{{route('home')}}">Home</a>
+                            </li>
+                            <li class="list-group-item">
                                 <a href="{{route('posts.index')}}">All Posts</a>
                             </li>
                             <li class="list-group-item">
@@ -45,6 +48,15 @@
                             </li>
                             <li class="list-group-item">
                                 <a href="{{route('category.create')}}">New Category</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{route('tags.index')}}">All Tags</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{route('tags.create')}}">New Tag</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{{route('profile.index')}}">My profile</a>
                             </li>
                             @if(Auth::user()->admin)
                                 <li class="list-group-item">

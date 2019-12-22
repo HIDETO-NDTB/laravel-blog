@@ -11,9 +11,32 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[
+    'uses' => 'FrontEndController@index',
+    'as' => 'index'
+]);
+
+Route::get('/result',[
+    'uses' => 'FrontEndController@search',
+    'as' => 'search.results'
+]);
+
+Route::get('/post/{slug}',[
+    'uses' => 'FrontEndController@post_single',
+    'as' => 'post.single'
+]);
+
+Route::get('/category_single/{category}',[
+    'uses' => 'FrontEndController@category_single',
+    'as' => 'category.single'
+]);
+
+Route::get('/tag_single/{tag}',[
+    'uses' => 'FrontEndController@tag_single',
+    'as' => 'tag.single'
+]);
+
+
 
 Auth::routes();
 
@@ -37,6 +60,7 @@ Route::get('/kill-posts/{id}',[
 ]);
 
 Route::resource('category','CategoryController');
+Route::resource('tags','TagsController');
 
 Route::group(['middleware' => 'admin'],function(){
 
@@ -71,3 +95,13 @@ Route::group(['middleware' => 'admin'],function(){
         'as' => 'settings.update'
     ]);
 });
+
+Route::get('/profile',[
+    'uses' => 'ProfilesController@index',
+    'as' => 'profile.index'
+]);
+
+Route::post('/profile/update',[
+    'uses' => 'ProfilesController@update',
+    'as' => 'profile.update'
+]);

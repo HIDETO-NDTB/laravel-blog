@@ -29,6 +29,31 @@
                 <input type="file" name="featured">
             </div>
             <div class="form-group">
+                <select name="category_id" id="" class="form-control">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}"
+                            @if(isset($post))
+                                @if($post->category_id == $category->id) selected @endif
+                            @endif
+                            >{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tags">Select Tags</label>
+                @foreach($tags as $tag)
+                <div class="checkbox">
+                    <label><input type="checkbox" name="tags[]" value="{{$tag->id}}"
+                        @if(isset($post))
+                            @foreach($post->tags as $tag1)
+                                @if($tag->id == $tag1->id) checked @endif
+                            @endforeach
+                        @endif>{{ $tag->name}}</label>
+
+                </div>
+                @endforeach
+            </div>
+                <div class="form-group">
                     <button class="btn btn-success btn-block">
                         {{ isset($post)? 'Update' : 'Create' }}
                 </div>

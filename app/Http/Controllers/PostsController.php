@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
+use App\Tag;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -29,7 +32,10 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('posts.create')->with('categories',$categories)
+                                   ->with('tags',$tags);
     }
 
     /**
@@ -64,12 +70,16 @@ class PostsController extends Controller
             'title' => $request->title,
             'slug' => str_slug($request->title),
             'content' => $request->content,
-            'featured' => $featured_new_name
+            'featured' => asset('storage/'.$featured_new_name),
+            'category_id' => $request->category_id,
+            'user_id' => Auth::user()->id
         ]);
 
         //$post->featured =$featured_new_name;
 
         $post->save();
+
+        $post->tags()->attach($request->tags);
 
         //return redirect to index page
         Session::flash('success','Post stored successfully');
@@ -97,7 +107,9 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.create')->with('post',$post);
+        return view('posts.create')->with('post',$post)
+                                   ->with('categories',Category::all())
+                                   ->with('tags',Tag::all());
     }
 
     /**
@@ -124,14 +136,15 @@ class PostsController extends Controller
         if($request->hasFile('featured')){
             $featured = $request->featured;
             $featured_new_name = time().$featured->getClientOriginalName();
-            $featured->move('uploads/posts',$featured_new_name);
-            $post->featured = asset('uploads/posts/'.$featured_new_name);
+            Storage::disk('public')->put($featured_new_name,file_get_contents($featured));
+            //$featured->move('uploads/posts',$featured_new_name);
+            $post->featured = asset('storage/'.$featured_new_name);
         }
 
         $post->fill($request->input())->save();
 
         //$post->save();
-
+        $post->tags()->sync($request->tags);
         //return redirect to index page
         Session::flash('success','Post Updated successfully');
         return redirect()->route('posts.index');

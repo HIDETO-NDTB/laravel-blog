@@ -16,5 +16,17 @@ class Post extends Model
      */
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['title','slug','content','featured'];
+    protected $fillable = ['title','slug','content','featured','category_id','user_id'];
+
+    public function category(){
+        return $this->belongsTo('App\Category');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
+    public function tags(){
+        return $this->belongsToMany('App\Tag');
+    }
 }

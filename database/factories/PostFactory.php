@@ -11,6 +11,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'title' => $title,
         'slug' => str_slug($title),
         'content' => $faker->paragraph(3),
-        'featured' => asset('uploads/posts/sample.jpg')
+        'featured' => asset('uploads/posts/sample.jpg'),
+        'category_id' => $faker->randomDigit
     ];
 });
